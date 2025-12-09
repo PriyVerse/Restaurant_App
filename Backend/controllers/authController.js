@@ -1,6 +1,6 @@
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
+import bcrypt from "dcryptjs";
 
 // Generate JWT and set cookie
 const generateTokan = (res, payload) => {
@@ -73,11 +73,40 @@ export const loginUser = async(req,res) =>{
     }  
 }
 
+export const adminLogin = async (req, res) => {
+    try{
+        const{email,password} = req.body;
+        if(!email || !password){
+            return res.json({message:"Please fill all the fields",success:false})
+        }
+        const adminEmail = process.env.ADMIN_EMAIL;
+        const adminPassword = process.env.ADMIN_PASSWORD;
 
-export const logOutUser = async (req, res) => {
+        if(email !== adminEmail || password !== adminPassword){
+            return res.json({message:"Invalid credentials",success:false})
+        }
+        const tokan = jwt.sign({email},process.env.JWT_SECRET,{
+            expiresIn:"1d"
+        })
+        res.cookie("tokan", tokan, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 24 * 60 * 60 * 1000,
+        });
+        return res.json({message:"Admin logged in successfully",success:true})
+
+    }
+    catch(error){
+        console.log(error.message);
+        return res.json({message:"Interal server error",success:false})
+        
+    }  
+}
+export const logoutUser = async (req, res) => {
     try {
         // Clear the auth cookie (same options to ensure it is removed)
-        res.clearCookie("tokan",)
+        res.clearCookie("tokan")
         return res.json({ message: "User logged out successfully", success: true });
     } catch (error) {
         console.error(error.message);
