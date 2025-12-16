@@ -5,11 +5,13 @@ import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import authRoutes from "./routes/authRoutes.js"; 
+import connectCloudinary from "./config/clodinary.js";
 dotenv.config();
 
 const app = express();
 //database connection
 connectDB();
+connectCloudinary();
 //middlewares
 app.use(express.json());
 app.use(cors());
