@@ -11,4 +11,4 @@ categoryRoutes.delete("/delete/:id", adminOnly, deleteCategory);
 categoryRoutes.get("/all", getAllCategories);
 
 export default categoryRoutes;
-// this is to be deleted tommorow
+
