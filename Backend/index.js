@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import menuRoutes from "./routes/menuRoutes.js";
 import authRoutes from "./routes/authRoutes.js"; 
 import connectCloudinary from "./config/clodinary.js";
 dotenv.config();
@@ -23,9 +24,9 @@ app.get("/", (req, res) => {
   res.send("Hello from server");
 });
 
-
 app.use("/api/auth",authRoutes)
 app.use("/api/category",categoryRoutes)
+app.use("/api/menu",menuRoutes)
 
 app.listen(PORT, () => {
   console.log(`server is running on ${PORT}`);
