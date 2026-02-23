@@ -1,7 +1,13 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
-import { ShoppingCart } from "lucide-react";
+import {
+  Calculator,
+  ShoppingCart,
+  Calendar,
+  Package,
+  LogOut,
+} from "lucide-react";
 
 const Navbar = () => {
   const { navigate, user, setUser } = useContext(AppContext);
@@ -12,7 +18,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left- Logo and navigation links */}
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
             <Link to="/" className="text-2xl font-bold text-blue-800">
               <img src="./logo.png" alt="Logo" className="w-32" />
             </Link>
@@ -35,7 +41,10 @@ const Navbar = () => {
           </div>
           {/*Right- cart and login*/}
           <div className="flex items-center space-x-4">
-            <button className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <button
+              onClick={() => navigate("/cart")}
+              className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
               <ShoppingCart size={24} className="text-gray-700" />
               <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 3
@@ -43,35 +52,155 @@ const Navbar = () => {
             </button>
             {/* login and profile */}
             <div className="hidden md:block">
-                {user ? (
-                  <div className="relative">
-                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                     onMouseEnter={()=>setIsProfileOpen(true)}
-                     onMouseLeave={()=>setIsProfileOpen(false)}
+              {user ? (
+                <div className="relative">
+                  <button
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    onMouseEnter={() => setIsProfileOpen(true)}
+                    onMouseLeave={() => setIsProfileOpen(false)}
+                  >
+                    <img
+                      src="./user-avatar.png"
+                      alt="User Avatar"
+                      className="w-8 h-8 rounded-full"
+                    />
+                  </button>
+
+                  {isProfileOpen && (
+                    <div
+                      onMouseEnter={() => setIsProfileOpen(true)}
+                      onMouseLeave={() => setIsProfileOpen(false)}
+                      className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10 border border-gray-200"
                     >
-                      <img src="./user-avatar.png" alt="User Avatar" className="w-8 h-8 rounded-full" /> 
-                    </button>
+                      <Link
+                        to="/my-bookings"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      >
+                        <Calendar
+                          size={20}
+                          className="text-gray-700 mx-4 mb-2"
+                        />
+                        My Bookings
+                      </Link>
 
-                    {
-
-                        isProfileOpen && (
-                            <div>
-                            onMouseEnter={()=>setIsProfileOpen(true)}
-                            onMouseLeave={()=>setIsProfileOpen(false)}
-                            className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10"
-                        )
-                        
-                        </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link to="/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                    Login
-                  </Link>
-                )}
+                      <Link
+                        to="/my-orders"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      >
+                        <Package
+                          size={20}
+                          className="text-gray-700 mx-4 mb-2"
+                        />
+                        My Orders
+                      </Link>
+                      <button
+                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        onClick={() => setUser(null)}
+                      >
+                        <LogOut size={18} className="mr-3" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={() => navigate("/login")}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Login
+                </button>
+              )}
             </div>
-            </div>
+          </div>
         </div>
+        {/* Mobile menu */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 space-y-2 border-t border-gray-200 pt-4">
+            <Link to="/" className="block text-gray-700 hover:text-blue-800">
+              Home
+            </Link>
+            <Link
+              to="/menu"
+              className="block text-gray-700 hover:text-blue-800"
+            >
+              Menu
+            </Link>
+            <Link
+              to="/about"
+              className="block text-gray-700 hover:text-blue-800"
+            >
+              About
+            </Link>
+            <Link
+              to="/contact"
+              className="block text-gray-700 hover:text-blue-800"
+            >
+              Contact
+            </Link>
+            <div>
+              {user ? (
+                <div className="relative">
+                  <button
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    onMouseEnter={() => setIsProfileOpen(true)}
+                    onMouseLeave={() => setIsProfileOpen(false)}
+                  >
+                    <img
+                      src="./user-avatar.png"
+                      alt="User Avatar"
+                      className="w-8 h-8 rounded-full"
+                    />
+                  </button>
+
+                  {isProfileOpen && (
+                    <div
+                      onMouseEnter={() => setIsProfileOpen(true)}
+                      onMouseLeave={() => setIsProfileOpen(false)}
+                      className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10 border border-gray-200"
+                    >
+                      <Link
+                        to="/my-bookings"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      >
+                        <Calendar
+                          size={20}
+                          className="text-gray-700 mx-4 mb-2"
+                        />
+                        My Bookings
+                      </Link>
+
+                      <Link
+                        to="/my-orders"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      >
+                        <Package
+                          size={20}
+                          className="text-gray-700 mx-4 mb-2"
+                        />
+                        My Orders
+                      </Link>
+                      <button
+                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        onClick={() => setUser(null)}
+                      >
+                        <LogOut size={18} className="mr-3" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={() => navigate("/login")}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Login
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
